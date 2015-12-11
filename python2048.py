@@ -188,7 +188,7 @@ class gameGUI:
         them.'''
         if event.keysym == 'w' or event.keysym == 'W' or event.keysym == 'Up':
         # If any of the keys pressed are these, then move object in the upward direction
-            count = 0
+            movedTile = False
             for Column in range(0, 4):
                 for Row in range(1, 4): # For rows 1, 2 and 3
                     if self.grid[Column][Row] != None:
@@ -201,26 +201,26 @@ class gameGUI:
                                     self.grid[Column][r - 1] = self.newBlock(self.grid[Column][r - 1].getNumber(), Column, r - 1) # Set the target tile to new block
                                     num = self.grid[Column][r - 1].getNumber()
                                     self.score(num)
-                                    count += 1
+                                    movedTile = True
                                 else:
                                     (x, y) = self.generateCoords(Column, r) # Generate coordinates for the canvas for the tile below occupied tile
                                     self.canvas.coords(self.grid[Column][Row].getID(), x, y) # Move the block from (Column, Row) to the coordinate below occupied tile
                                     self.grid[Column][r] = self.grid[Column][Row] # Copy block into new location
                                     if r != Row:
                                         self.grid[Column][Row] = None #Erase block from old location
-                                        count += 1
+                                        movedTile = True
                                 break
                             elif self.grid[Column][0] == None: # If top row is empty then move the block to the row, and delete its old spot.
                                 (x, y) = self.generateCoords(Column, 0)
                                 self.canvas.coords(self.grid[Column][Row].getID(), x, y)
                                 self.grid[Column][0] = self.grid[Column][Row]
                                 self.grid[Column][Row] = None
-                                count += 1
+                                movedTile = True
                                 break
-            if count != 0:
+            if movedTile:
                 self.afterMove()
         elif event.keysym == 'a' or event.keysym == 'A' or event.keysym == 'Left': # Move objects in the left direction
-            count = 0
+            movedTile = False
             for Column in range(1, 4): # For columns 1, 2, and 3
                 for Row in range(0, 4):
                     if self.grid[Column][Row] != None:
@@ -234,26 +234,26 @@ class gameGUI:
                                     self.grid[Column][Row] = None # Reset the acquired block to None
                                     num = self.grid[r - 1][Row].getNumber()
                                     self.score(num)
-                                    count += 1
+                                    movedTile = True
                                 else:
                                     (x, y) = self.generateCoords(r, Row) # Generate coordinates
                                     self.canvas.coords(self.grid[Column][Row].getID(), x, y)
                                     self.grid[r][Row] = self.grid[Column][Row]
                                     if r != Column:
                                         self.grid[Column][Row] = None # Erases block ID from old location in grid
-                                        count += 1
+                                        movedTile = True
                                 break
                             elif self.grid[0][Row] == None:
                                 (x, y) = self.generateCoords(0, Row)
                                 self.canvas.coords(self.grid[Column][Row].getID(), x, y)
                                 self.grid[0][Row] = self.grid[Column][Row]
                                 self.grid[Column][Row] = None
-                                count += 1
+                                movedTile = True
                                 break
-            if count != 0:
+            if movedTile:
                 self.afterMove()
         elif event.keysym == 'd' or event.keysym == 'D' or event.keysym == 'Right': # Move objects right
-            count = 0
+            movedTile = False
             for Column in range(2, -1, -1): # In columns 2, 1 and 0
                 for Row in range(0, 4): # In rows 0, 1, 2 and 3
                     if self.grid[Column][Row] != None:
@@ -267,26 +267,26 @@ class gameGUI:
                                     self.grid[Column][Row] = None # Reset the acquired block to None
                                     num = self.grid[r + 1][Row].getNumber()
                                     self.score(num)
-                                    count += 1
+                                    movedTile = True
                                 else:
                                     (x, y) = self.generateCoords(r, Row) # Generate coordinates
                                     self.canvas.coords(self.grid[Column][Row].getID(), x, y)
                                     self.grid[r][Row] = self.grid[Column][Row]
                                     if r != Column: # If the r from line above are not equal to each other, delete old tile. We don't want to delete the ID if it's in correct place.
                                         self.grid[Column][Row] = None # Erases block ID from old location in grid
-                                        count += 1
+                                        movedTile = True
                                 break
                             elif self.grid[3][Row] == None:
                                 (x, y) = self.generateCoords(3, Row)
                                 self.canvas.coords(self.grid[Column][Row].getID(), x, y)
                                 self.grid[3][Row] = self.grid[Column][Row]
                                 self.grid[Column][Row] = None
-                                count += 1
+                                movedTile = True
                                 break
-            if count != 0:
+            if movedTile:
                 self.afterMove()
         elif event.keysym == 's' or event.keysym == 'S' or event.keysym == 'Down': # Move objects downward
-            count = 0
+            movedTile = False
             for Column in range(0, 4): # For columns 0, 1, 2 and 3
                 for Row in range(2, -1, -1): # For rows 2, 1 and 0
                     if self.grid[Column][Row] != None:
@@ -299,23 +299,23 @@ class gameGUI:
                                     self.grid[Column][Row] = None
                                     num = self.grid[Column][r + 1].getNumber()
                                     self.score(num)
-                                    count += 1
+                                    movedTile = True
                                 else:
                                     (x, y) = self.generateCoords(Column, r)
                                     self.canvas.coords(self.grid[Column][Row].getID(), x, y)
                                     self.grid[Column][r] = self.grid[Column][Row]
                                     if r != Row:
                                         self.grid[Column][Row] = None
-                                        count += 1
+                                        movedTile = True
                                 break
                             elif self.grid[Column][3] == None:
                                 (x, y) = self.generateCoords(Column, 3)
                                 self.canvas.coords(self.grid[Column][Row].getID(), x, y)
                                 self.grid[Column][3] = self.grid[Column][Row]
                                 self.grid[Column][Row] = None
-                                count += 1
+                                movedTile = True
                                 break
-            if count != 0:
+            if movedTile:
                 self.afterMove()
         if self.loseCheck():
             self.lose = mBox.showerror("Game Over", "You've run out of available moves.")
