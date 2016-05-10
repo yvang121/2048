@@ -39,7 +39,8 @@ class gameGUI:
         self.mainWin.minsize(550, 550) # Creates a minimum window size
         self.canvas = Canvas(self.mainWin, bg = '#F5DEB3', width = 550, height = 550) # Canvas size taking into account the size of vertical and horizontal lines.
 
-        self.mainWin.bind('<w>', self.move) # All the different key bindings available for the user to press
+        # All the different key bindings available for the user to press
+        self.mainWin.bind('<w>', self.move)
         self.mainWin.bind('<a>', self.move)
         self.mainWin.bind('<s>', self.move)
         self.mainWin.bind('<d>', self.move)
@@ -97,7 +98,7 @@ class gameGUI:
                      512: PhotoImage(file = 'block/num_512.gif'),
                      1024: PhotoImage(file = 'block/num_1024.gif'),
                      2048: PhotoImage(file = 'block/num_2048.gif')}
-        self.grid = [[None, None, None, None], [None, None, None, None], [None, None, None, None], [None, None, None, None]] # The 'behind-the-scenes' grid
+        self.grid = [[None for i in range(4)] for i in range(4)] # The 'behind-the-scenes' grid
         self.randomAnte()
 
     def newGame(self):
